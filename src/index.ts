@@ -50,20 +50,24 @@ ZipLoader.getFiles = (jsZip: JSZip, paths: string[]) =>
 
 /* Main action */
 (async () => {
-    const app = new Application({
-        view: document.getElementById("canvas") as HTMLCanvasElement | null,
-        width: 500 * window.devicePixelRatio,
-        height: 600 * window.devicePixelRatio,
-        backgroundAlpha: 0
-    });
+    try {
+        const app = new Application({
+            view: document.getElementById("canvas") as HTMLCanvasElement | null,
+            width: 500 * window.devicePixelRatio,
+            height: 600 * window.devicePixelRatio,
+            backgroundAlpha: 0
+        });
+        const model = await Live2DModel.from("zip://" + hijikiModel);
+        app.stage.addChild(model);
 
-    const model = await Live2DModel.from("zip://" + hijikiModel);
-    app.stage.addChild(model);
-
-    //model.x = 100;
-    //model.y = 100;
-    //model.rotation = Math.PI;
-    //model.skew.x = Math.PI;
-    model.scale.set(0.5, 0.5);
-    //model.anchor.set(0.5, 0.5);
+        //model.x = 100;
+        //model.y = 100;
+        //model.rotation = Math.PI;
+        //model.skew.x = Math.PI;
+        model.scale.set(0.25 * window.devicePixelRatio, 0.25 * window.devicePixelRatio);
+        //model.anchor.set(0.5, 0.5);
+    } catch {
+        console.log("Not supported!!!");
+        return;
+    }
 })();
